@@ -6,7 +6,6 @@
 import csv
 import os
 
-from sympy import total_degree
 file_to_load = os.path.join("Resources","election_results.csv")
 file_to_save = os.path.join("analysis", "election_analysis.txt")
 
@@ -78,9 +77,8 @@ with open(file_to_save,"w") as txt_file:
 with open(file_to_load) as election_data:
     file_reader = csv.reader(election_data)
     headers = next(file_reader)
-    county_results = (f"\nCounty Votes\n")
-    print(county_results, end ="")
-    # txt_file.write(county_results)
+    
+
 
 
     for row in file_reader:
@@ -94,13 +92,20 @@ with open(file_to_load) as election_data:
             county_options.append(county_name)
             county_votes[county_name] = 0
         county_votes[county_name] += 1
+
+with open(file_to_save,"w") as txt_file:
+    county_results = (f"\nCounty Votes\n")
+  
+    print(county_results, end ="")
+    txt_file.write(county_results)
+
     for county_name in county_options:
         cvotes = county_votes[county_name]
         cvotes_percentage = float(cvotes) / float(total_votes) *100
         county_results = (f"{county_name}:{cvotes_percentage:.1f}% ({cvotes:,})\n")
         
         print(county_results)
-        # txt_file.write(county_results)
+        txt_file.write(county_results)
         # txt_file.write(county_results)
         if (cvotes > county_count) and (cvotes_percentage > winning_cpercentage):
             county_count = cvotes
@@ -112,7 +117,7 @@ with open(file_to_load) as election_data:
             f"Largest County Turnout:{winning_county}\n"
             f"--------------------\n")
     print(winning_county_summary) 
-    # txt_file.write(winning_county_summary)
+    txt_file.write(winning_county_summary)
 
  
 
